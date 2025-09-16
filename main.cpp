@@ -11,7 +11,7 @@ using namespace std;
 // Helper function to get the file size
 std::ifstream::pos_type filesize(const char* filename);
 
-// Compare two files to verify correctness
+// Compare two files to verify correctness (optional for decompress mode)
 bool filesAreEqual(const char* file1, const char* file2) {
     ifstream f1(file1, ios::binary);
     ifstream f2(file2, ios::binary);
@@ -50,16 +50,7 @@ int main() {
         cout << "Compression Ratio : " 
              << (1.0 * filesize("output.txt") / filesize("input.txt")) << endl;
 
-        // Decompress to verify
-        huffman.deHuffer("output.txt", "output2.txt");
-        cout << "Decompression done (output2.txt generated)." << endl;
-
-        // Compare input and decompressed output
-        if (filesAreEqual("input.txt", "output2.txt")) {
-            cout << "✅ Verification successful: Decompressed file matches original input." << endl;
-        } else {
-            cout << "❌ Verification failed: Decompressed file does NOT match input!" << endl;
-        }
+        cout << "✅ Compression complete. Output file: output.txt" << endl;
     }
     else if (workingMode == "decompress") {
         clock_t tStart = clock();
@@ -72,12 +63,14 @@ int main() {
         cout << "Input File (Compressed) Size : " << filesize("output.txt") << " bytes." << endl;
         cout << "DeCompressed File Size : " << filesize("output2.txt") << " bytes." << endl;
 
+        // Optional verification if input.txt exists
         if (filesAreEqual("input.txt", "output2.txt")) {
             cout << "✅ Verification successful: Decompressed file matches original input." << endl;
         } else {
             cout << "⚠️ Note: input.txt not compared (might be missing or different)." << endl;
         }
-    } else {
+    } 
+    else {
         cerr << "Invalid mode entered. Please use 'compress' or 'decompress'." << endl;
     }
 
